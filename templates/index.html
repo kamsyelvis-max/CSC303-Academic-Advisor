@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Academic Advisor AI</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: Arial, sans-serif; background: #f3f6fb; color: #182235; }
+    .container { max-width: 760px; margin: 38px auto; padding: 26px; }
+    .panel { background: white; padding: 28px; border-radius: 18px; box-shadow: 0 10px 35px #17255412; }
+    h1 { margin-top: 0; color: #174ea6; }
+    .intro { color: #596579; line-height: 1.5; }
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 22px; }
+    label { display: block; font-weight: bold; font-size: 14px; margin-bottom: 7px; }
+    input { width: 100%; padding: 12px; border: 1px solid #cbd5e1; border-radius: 9px; font-size: 16px; }
+    button { margin-top: 22px; width: 100%; border: 0; border-radius: 9px; padding: 14px; background: #174ea6; color: white; font-weight: bold; font-size: 16px; cursor: pointer; }
+    .result, .error { margin-top: 22px; padding: 18px; border-radius: 12px; line-height: 1.5; }
+    .result { background: #eef7f0; border: 1px solid #b8dfc0; }
+    .error { background: #fff1f0; border: 1px solid #f1b7b3; }
+    .note { font-size: 12px; color: #687386; margin-top: 18px; }
+    @media (max-width: 560px) { .grid { grid-template-columns: 1fr; } .container { margin: 12px auto; padding: 12px; } }
+  </style>
+</head>
+<body>
+  <main class="container">
+    <section class="panel">
+      <h1>Academic Advisor AI</h1>
+      <p class="intro">Enter your academic details to receive a machine-learning performance category and general study advice.</p>
+      <form method="POST">
+        <div class="grid">
+          <div>
+            <label for="cgpa">CGPA (0–5)</label>
+            <input id="cgpa" name="cgpa" type="number" min="0" max="5" step="0.01" required value="{{ request.form.get('cgpa', '') }}">
+          </div>
+          <div>
+            <label for="attendance">Attendance (%)</label>
+            <input id="attendance" name="attendance" type="number" min="0" max="100" step="0.1" required value="{{ request.form.get('attendance', '') }}">
+          </div>
+          <div>
+            <label for="study_hours">Study hours per day</label>
+            <input id="study_hours" name="study_hours" type="number" min="0" max="24" step="0.1" required value="{{ request.form.get('study_hours', '') }}">
+          </div>
+          <div>
+            <label for="assignment_score">Assignment score (%)</label>
+            <input id="assignment_score" name="assignment_score" type="number" min="0" max="100" step="0.1" required value="{{ request.form.get('assignment_score', '') }}">
+          </div>
+        </div>
+        <button type="submit">Get Academic Advice</button>
+      </form>
+
+      {% if result %}
+      <div class="result">
+        <h2>Predicted category: {{ result.category }}</h2>
+        <p>{{ result.advice }}</p>
+      </div>
+      {% endif %}
+      {% if error %}
+      <div class="error">{{ error }}</div>
+      {% endif %}
+      <p class="note">Educational prototype only. It uses a demonstration dataset and should not replace advice from your lecturer or academic adviser.</p>
+    </section>
+  </main>
+</body>
+</html>
